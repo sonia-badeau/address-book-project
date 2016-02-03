@@ -1,0 +1,28 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "creation of a command-line address book",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sonia-badeau/address-book-project.git"
+  },
+  "keywords": [
+    "javascript",
+    "command",
+    "line",
+    "addressbook"
+  ],
+  "author": "sonia badeau",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sonia-badeau/address-book-project/issues"
+  },
+  "homepage": "https://github.com/sonia-badeau/address-book-project#readme",
+  "dependencies": {
+    "inquirer": "^0.11.4"
+  }
+}
