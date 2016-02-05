@@ -34,6 +34,7 @@ function menuApp() {
         }
         else if (answers.menuChoice === 'search') {
             console.log("Let's looking for your friends");
+            searchContact()
         }
         else if (answers.menuChoice === 'exit') {
             console.log("You are going to quit the program! See you soon :)");
@@ -81,7 +82,7 @@ function createNewContact() { //on crée une fonction qui va nous permettre de c
 }
 
 
-//Type
+/*//Type
 var typeMenu = [ 
     {
         name: 'typeChoice',
@@ -103,7 +104,7 @@ function typeApp(){
 inquirer.prompt(typeMenu, function (answers){
 });
 } //on crée une fonction qui va nous permettre de choisir un type comme Home ou Work pour les courriels, les téléphones..
-
+*/
 function createUser(){
      inquirer.prompt(createNewContact(), function(answers) {
                 var newUser = answers;
@@ -112,6 +113,8 @@ function createUser(){
                 console.log(contactList);
                 menuApp()
             })
+            
+            
 }
 
 // Search function
@@ -122,23 +125,37 @@ function createUser(){
 function searchContact (){
     var searchBar = [{
     type: 'input',
-    name: 'Search bar',
+    name: 'search',
     message: 'Please enter a name'
     }] 
-        inquirer.prompt(searchBar, function() {
+        inquirer.prompt(searchBar, function(answers) {
             var searchResults = [];
             // pour chaque entrée du tableau, on veut voir si les données entrées par l'utilisateur peuvent être trouvées dans la contactList
-            contactList.forEach (function (user){
-            if (user.firstName === searchContact.name()) {
-                searchResults.push(user);// 
-            }
-            else if(user.lastName === searchContact.name) {
-                searchResults.push(user);
-            }
-            });
-        
+            contactList.forEach(function (user){
+                if(answers.search === user.firstname || answers.search === user.lastname){
+                    console.log(user)
+                }
+           });
             });
     
     
         }
 
+var typeMenu = [ 
+    {
+        name: 'searchchoices',
+        message: 'Choose the action you want to do',
+        type: 'list',
+        choices: [
+            {
+                name: 'go back and do another search',
+                value: 'go back to search'
+            },
+            {
+                name: 'go back to the main menu ',
+                value: 'return to main menu'
+            }
+            ]
+    }
+    ]
+    
