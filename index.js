@@ -1,4 +1,8 @@
 var inquirer = require("inquirer"); //this a library
+var Table = require('cli-table'); //this is the library to render unicode-aided tables on the command line
+var colors = require('colors');
+
+
 
 var contactList = [];
 
@@ -8,7 +12,9 @@ var contactList = [];
 //Search for existing address book entries
 //Exit the program
 
-var mainMenu = [{
+
+function menuApp() {
+    var mainMenu = [{
     name: 'menuChoice',
     message: 'What do you want to do?',
     type: 'list',
@@ -24,16 +30,14 @@ var mainMenu = [{
     }
     ]
 }]
-
-function menuApp() {
     inquirer.prompt(mainMenu, function(answers) { //Launch the prompt interface
         if (answers.menuChoice === 'create') {
             console.log("Let's create a new address book entry together");
             createUser()
-            
+        
         }
         else if (answers.menuChoice === 'search') {
-            console.log("Let's looking for your friends");
+            console.log("Let's look for your friends");
             searchContact()
         }
         else if (answers.menuChoice === 'exit') {
@@ -56,7 +60,7 @@ function createNewContact() { //on crée une fonction qui va nous permettre de c
         {
             name: "lastname",
             message: "Last name:",
-        },
+        }/*,
         {
             name: "phonenumber",
             message: "Phone number:",
@@ -76,35 +80,11 @@ function createNewContact() { //on crée une fonction qui va nous permettre de c
         {
             name: "birthday",
             message: "Birthday"
-        }
+        }*/
     ];
     return questionsContact // on retourne la variable
+    
 }
-
-
-/*//Type
-var typeMenu = [ 
-    {
-        name: 'typeChoice',
-        message: 'Choose the type you want to add',
-        type: 'list',
-        choices: [
-            {
-                name: 'Choose the Home type',
-                value: 'home'
-            },
-            {
-                name: 'Choose the Work type',
-                value: 'work'
-            }
-            ]
-    }
-    ] // permet de choisir un type lorsqu'on a plusieurs numéros de téléphone, courriels, ... cf mainMenu
-function typeApp(){
-inquirer.prompt(typeMenu, function (answers){
-});
-} //on crée une fonction qui va nous permettre de choisir un type comme Home ou Work pour les courriels, les téléphones..
-*/
 function createUser(){
      inquirer.prompt(createNewContact(), function(answers) {
                 var newUser = answers;
@@ -115,6 +95,35 @@ function createUser(){
             })
             
             
+}
+
+function viewContact (index){
+
+var table = new Table({
+  chars: { 'top': '═' , 'top-mid': '╤' , 'top-left': '╔' , 'top-right': '╗'
+         , 'bottom': '═' , 'bottom-mid': '╧' , 'bottom-left': '╚' , 'bottom-right': '╝'
+         , 'left': '║' , 'left-mid': '╟' , 'mid': '─' , 'mid-mid': '┼'
+         , 'right': '║' , 'right-mid': '╢' , 'middle': '│' }
+});
+
+table.push(
+    ['First name', contactList[index].firstname]
+  , ['Last name', contactList[index].lastname]
+);
+
+console.log(table.toString());
+
+/*inquirer.promptAsync([
+    {
+        type: "list",
+        name: "viewing_contact_menu",
+        choices:[
+            "Edit this entry",
+            "Delete this entry",
+            "Go back to Main Menu"
+            ]
+    }
+    ])*/
 }
 
 // Search function
@@ -131,17 +140,44 @@ function searchContact (){
         inquirer.prompt(searchBar, function(answers) {
             var searchResults = [];
             // pour chaque entrée du tableau, on veut voir si les données entrées par l'utilisateur peuvent être trouvées dans la contactList
-            contactList.forEach(function (user){
+            contactList.forEach(function (user,index){
                 if(answers.search === user.firstname || answers.search === user.lastname){
-                    console.log(user)
+                    //console.log(user)
+                    viewContact(index)
+                    nextMenuApp()
                 }
+               
            });
             });
-    
-    
+            
         }
-
-var typeMenu = [ 
+ 
+function nextMenuApp() {
+    var nextMenu = [{
+    name: 'menuChoice',
+    message: 'What do you want to do next?',
+    type: 'list',
+    choices: [{
+        name: 'Go back and do another search',
+        value: 'search'
+    }, {
+        name: 'Go back to the main Menu',
+        value: 'back'
+    }
+    ]
+}]
+    inquirer.prompt(nextMenu, function(answers) { //Launch the prompt interface
+        if (answers.menuChoice === 'search') {
+            console.log("Let's look for your friends");
+            searchContact()
+        }
+        if (answers.menuChoice === 'back') {
+            console.log("Go back to the main Menu");
+            menuApp()
+        }
+    });
+}
+/*var typeMenu = [ 
     {
         name: 'searchchoices',
         message: 'Choose the action you want to do',
@@ -157,5 +193,6 @@ var typeMenu = [
             }
             ]
     }
-    ]
-    
+    ]*/
+
+
